@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "ChowStyle";
+  src: url("../public/assets/fonts/CHOWFUN_.TTF");
+}
+body{
+  margin: 0;
+  font-family: "ChowStyle";
+}
+canvas {
+  background: transparent;
+}
