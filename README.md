@@ -8,22 +8,23 @@
 
 ## BUT :raised_eyebrow:
 
-Le but de se projet est de faire un **"Site Web"** dans lequel tu sélectionnes le fichier `Blender` que tu veux ouvrir et voir la maquette 3D.
+Le but de ce projet est de faire un **"Site Web"** dans lequel tu sélectionnes le fichier `.gltf` dont tu veux voir le contenu.
+Ici, ce sera des maquettes 3D faite sur par exemple `Blender`.
 
 --------------------------
 
 ### Pour le rendu final :mechanical_arm: :muscle: :handshake:
 
 Il y aura :
-- Un *Beau* site avec Page d'accueil, une page Home et une page de visionage de la maquette
+- Un *Beau* site avec une page *Home*, une page *Choose_folder* pour visionner les maquettes et une page *404*
 - Du *3D* dans la plupart des pages
-- De l'*Electron* pour sélectionner le .blend désirer
+- De l'*Electron* pour sélectionner le *.gltf* désiré
 
 --------------------------
 
 ### Pour lancer le projet :thinking:
 
-Pour lancer le projet c'est très simple :
+Pour lancer le projet, c'est très simple :
 
 Il vous suffit d'abord de le cloner :
 ```
@@ -46,14 +47,15 @@ npm run electron:start
 ### Pour réaliser l'application :exploding_head:
 
 Voici les différentes technologies utilisées pour la réalisation de ce projet :
-* [FIGMA] pour les logo / img
-* [React-router/] pour la navigation
-* [Blender] pour la 3D des maquettes selectionner
-* [styled-components]  pour le style
-* [Three.js]  pour la 3D du site
+* [React] pour le site
+* [React-router-dom] pour la navigation
+* [Blender] pour les maquettes 3D
+* [styled-components] pour le style
+* [keyframes] pour les animations de style
+* [Three.js] pour la 3D du site
+* [Gsap] pour les animations qui vont avec le 3D
+* [Dat.gui] pour le 3D également
 * [Electron] pour la sélection du fichier depuis notre dossier
-
-### Image du FIGMA :eyes:	
 
 --------------------------
 

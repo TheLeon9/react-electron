@@ -3,7 +3,7 @@ const theme = {
   white_color: 'ghostwhite',
   first_color: '#FFD700',
   second_color: '#C2FCF7',
-  background_color: '#002147',
+  background_color: 'rgb(0,0,40)',
   first_font: 'ChowStyle',
   title_font_size: 38,
   big_font_size: 24,

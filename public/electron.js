@@ -19,6 +19,8 @@ function createWindow() {
     dialog
       .showOpenDialog(mainWindow, {
         properties: ["openFile"],
+        filters: [
+          { name: '3D', extensions: ['gltf'] }]
       })
       .then((result) => {
         // se lance quand on a selectionner le fichier

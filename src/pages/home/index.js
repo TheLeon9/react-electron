@@ -1,21 +1,24 @@
 import React, { useRef, useEffect, useState } from "react";
-import Title from "../../components/Title";
 import {
-  P,
-  Span,
   CanvaCont,
   GlobalCont,
   TextCont,
-  LinkCont,
-  StyledLink,
+  FadingTextCont,
 } from "./style/home.js";
 import * as THREE from "three";
 import * as dat from "dat.gui";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import gsap from "gsap";
+import TextComposant from "./textComposant.js";
 
 const Home = () => {
-  const [guiRef, setGui] = useState()
+  const [guiRef, setGui] = useState();
+  const [showText, setShowText] = useState(true);
+  const [linkClick, setLinkClick] = useState(false);
+  const [linkEvent, setLinkEvent] = useState();
+  // const [cameraRotateX, setCameraRotateX] = useState(0);
+  // const [cameraPositionY, setCameraPositionY] = useState(0);
+
   const mount = useRef(null);
   // color for vertex
   const colors = [];
@@ -31,7 +34,7 @@ const Home = () => {
   useEffect(() => {
     // GUI
     const gui = new dat.GUI();
-    setGui(gui)
+    setGui(gui);
     let PlaneWidth = 400;
     let PlaneHeight = 400;
     let PlaneWidthSegments = 50;
@@ -123,6 +126,11 @@ const Home = () => {
       0.1,
       1000
     );
+    // gui.add(camera.rotation, 'x', 0, 1.5);
+    // gui.add(camera.position, 'y', 0, 400);
+    // Position the camera
+    camera.position.z = 50;
+
     const renderer = new THREE.WebGLRenderer();
 
     // no BACKGROUND on the canva
@@ -131,14 +139,11 @@ const Home = () => {
 
     // width / height
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(devicePixelRatio);
+    renderer.setPixelRatio(window.devicePixelRatio);
     mount.current.appendChild(renderer.domElement);
 
     // Orbite Controle
-    new OrbitControls(camera, renderer.domElement);
-
-    // Position the camera
-    camera.position.z = 50;
+    // new OrbitControls(camera, renderer.domElement);
 
     //  Create the Plane
     const planeGeometry = new THREE.PlaneGeometry(
@@ -179,7 +184,7 @@ const Home = () => {
     const animate = () => {
       requestAnimationFrame(animate);
       frame += 0.01;
-      // planeMesh.rotation.x += 0.01;
+
       renderer.render(scene, camera);
       raycaster.setFromCamera(mouse, camera);
 
@@ -240,24 +245,41 @@ const Home = () => {
     };
     animate();
   }, []);
-  const handleClick = () => {
-    guiRef.destroy();
-    console.log("oui");
-  };
+
+  useEffect(() => {
+    if (linkClick) {
+      // destroy GUI = control panel
+      guiRef.destroy();
+      setShowText(false);
+      const delayTime = 2000;
+      setTimeout(() => {
+        // console.log(linkEvent.target);
+        // window.location.href = linkEvent.target.href;
+      }, delayTime);
+    }
+  }, [linkEvent, linkClick, guiRef]);
+
   return (
     <GlobalCont>
-      <TextCont>
-        <Title margin_top={0} padding_bot={0} title="THE_LEON" />
-        <P>
-          First Project Made in<Span> Electron </Span>with<Span> ThreeJS </Span>
-          and<Span> React </Span>
-        </P>
-        <LinkCont>
-          <StyledLink to="/choose_folder" onClick={handleClick}>
-            START
-          </StyledLink>
-        </LinkCont>
-      </TextCont>
+      {showText ? (
+        <TextCont show={showText}>
+          <TextComposant
+            setLinkClick={setLinkClick}
+            setLinkEvent={setLinkEvent}
+            // setCameraRotateX={setCameraRotateX}
+            // setCameraPositionY={setCameraPositionY}
+          />
+        </TextCont>
+      ) : (
+        <FadingTextCont>
+          <TextComposant
+            setLinkClick={setLinkClick}
+            setLinkEvent={setLinkEvent}
+            // setCameraRotateX={setCameraRotateX}
+            // setCameraPositionY={setCameraPositionY}
+          />
+        </FadingTextCont>
+      )}
       <CanvaCont ref={mount} />
     </GlobalCont>
   );

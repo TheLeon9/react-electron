@@ -1,12 +1,32 @@
-import { PageWrapper, CanvaCont } from "./style/choose_folder";
+import {
+  PageWrapper,
+  CanvaCont,
+  LeftCont,
+  StyledLink,
+  Left,
+  Right,
+  RightCont,
+  P,
+  Span,
+  PName,
+  SpanName,
+  NameCont,
+  DragAndDropDiv,
+  Caution,
+  CustomButton,
+  StyledLinkCont,
+  InputSelect,
+} from "./style/choose_folder";
 import { useEffect, useState } from "react";
 import Title from "../../components/Title";
-import { Link } from "react-router-dom";
-import Model from "../../components/Model/index.jsx";
+import Model from "../../components/Model/index.js";
+import ModalComponent from "./modal";
+import Image from "./img/background.png";
 
 function App() {
-  const [filePath, setFile] = useState("");
+  const [file, setFile] = useState("");
   const [fileName, setFileName] = useState("");
+  const [modal, setModal] = useState(false);
 
   const openDialog = () => {
     window.dialog.open();
@@ -18,28 +38,70 @@ function App() {
     };
   }, []);
 
-  useEffect(() => {
-    if (filePath !== "") {
-      let name = filePath.split("\\");
-      setFileName(name[name.length - 1]);
+  function Verif(ext, file, name) {
+    if (ext === "gltf") {
+      setFileName(name);
+      setFile(file);
+    } else {
+      setModal(true);
     }
-  }, [filePath]);
+  }
+  const handleClick = (event) => {
+    const gltfFile = event.target.files[0];
+    let ext = gltfFile.name.split(".");
+    ext = ext[ext.length - 1];
+    Verif(ext, gltfFile, gltfFile.name);
+  };
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const gltfFile = event.dataTransfer.files[0];
+    let ext = gltfFile.name.split(".");
+    ext = ext[ext.length - 1];
+    Verif(ext, gltfFile, gltfFile.name);
+  };
 
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
   return (
     <PageWrapper>
-      <Title
-        margin_top={10}
-        padding_bot={10}
-        title="Select the .gltf that you want to view"
-      />
-      <Link to="/">Home</Link>
-      {/* <button onClick={openDialog}>Open File Dialog</button> */}
-      <CanvaCont>
-        <Model />
-            {/* {filePath ? 
-          : null} */}
-      </CanvaCont>
-      {fileName ? <p>{fileName} / {filePath}</p> : null}
+      {modal ? (
+          <ModalComponent setModal={setModal}/>
+      ) : null}
+      <Left img={Image}>
+        <LeftCont>
+          <CanvaCont>
+            <Model file={file} setFileName={setFileName} />
+          </CanvaCont>
+          <NameCont>
+            <SpanName>Name :</SpanName>
+            {fileName ? <PName>{fileName}</PName> : null}
+          </NameCont>
+        </LeftCont>
+      </Left>
+      <Right>
+        <RightCont>
+          <Title margin_top={10} padding_bot={10} title="Welcome" />
+          <P>
+            Here you can<Span> "View" </Span>your<Span> "3D models" </Span>
+          </P>
+          <P>
+            So Please<Span> "Select" </Span>it
+          </P>
+          <CustomButton onClick={openDialog}>OPEN FOLDER</CustomButton>
+          <P>
+            Or<Span> "Drag and Drop" </Span>it
+          </P>
+          <DragAndDropDiv onDrop={handleDrop} onDragOver={handleDragOver}>
+            <InputSelect type="file" onChange={handleClick} />
+            <Span>DROP ZONE</Span>
+          </DragAndDropDiv>
+          <Caution> /!\ We only Accept .GLTF files /!\ </Caution>
+          <StyledLinkCont>
+            <StyledLink to="/hi">Back Home</StyledLink>
+          </StyledLinkCont>
+        </RightCont>
+      </Right>
     </PageWrapper>
   );
 }
