@@ -1,5 +1,4 @@
 import styled, { keyframes } from "styled-components";
-import { Link } from "react-router-dom";
 
 export const GlobalCont = styled.div`
   display: flex;
@@ -7,7 +6,6 @@ export const GlobalCont = styled.div`
   justify-content: center;
   height: 100vh;
   width: 100vw;
-  /* background-color: ${(props) => props.theme.background_color}; */
   overflow: hidden;
 `;
 export const CanvaCont = styled.div`
@@ -56,7 +54,9 @@ export const Span = styled.span`
   border-bottom: ${(props) => props.theme.border_width}px solid
     ${(props) => props.theme.second_color};
 `;
-export const StyledLink = styled(Link)`
+export const StyledLink = styled.button`
+  cursor: pointer;
+  font-family: ${(props) => props.theme.first_font};
   font-weight: bold;
   border: ${(props) => props.theme.border_width}px solid
     ${(props) => props.theme.first_color};

@@ -22,6 +22,7 @@ import Title from "../../components/Title";
 import Model from "../../components/Model/index.js";
 import ModalComponent from "./modal";
 import Image from "./img/background.png";
+import Etoile from "./img/etoile.png";
 
 function App() {
   const [file, setFile] = useState("");
@@ -39,6 +40,7 @@ function App() {
   }, []);
 
   function Verif(ext, file, name) {
+    console.log(ext);
     if (ext === "gltf") {
       setFileName(name);
       setFile(file);
@@ -68,7 +70,7 @@ function App() {
       {modal ? (
           <ModalComponent setModal={setModal}/>
       ) : null}
-      <Left img={Image}>
+      <Left img={Etoile}>
         <LeftCont>
           <CanvaCont>
             <Model file={file} setFileName={setFileName} />
@@ -79,7 +81,7 @@ function App() {
           </NameCont>
         </LeftCont>
       </Left>
-      <Right>
+      <Right img={Image}>
         <RightCont>
           <Title margin_top={10} padding_bot={10} title="Welcome" />
           <P>

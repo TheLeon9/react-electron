@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   GlobalCont,
   CanvaCont,
@@ -16,7 +16,7 @@ import * as THREE from "three";
 import gsap from "gsap";
 import Image from "./img/background.png";
 
-const Error = () => {  
+const Error = () => {
   useEffect(() => {
     const canvasCont = document.querySelector("#canvasCont");
     // Create the scene
@@ -37,10 +37,10 @@ const Error = () => {
     // width / height
     renderer.setSize(canvasCont.offsetWidth, canvasCont.offsetHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    // mount.current.appendChild(renderer.domElement);
 
     // texture
     const earthUV = new THREE.TextureLoader().load("./assets/img/earth.jpeg");
+
     // create sphere
     const sphere = new THREE.Mesh(
       new THREE.SphereGeometry(5, 50, 50),
@@ -153,7 +153,9 @@ const Error = () => {
     <GlobalCont>
       <TextCont img={Image}>
         <Text>
-          <Title><TitleSpan>4</TitleSpan>04</Title>
+          <Title>
+            <TitleSpan>4</TitleSpan>04
+          </Title>
           <P>
             Sorry the page you are looking for as been <Span> Lost </Span>in
             <Span> Space </Span>

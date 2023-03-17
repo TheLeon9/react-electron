@@ -107,7 +107,7 @@ export const Right = styled.div`
   width: 30%;
   border-left: ${(props) => props.theme.border_width}px solid
     ${(props) => props.theme.first_color};
-  background-color: ${(props) => props.theme.black_color};
+    background-image: url(${props => props.img});
 `;
 export const RightCont = styled.div`
   display: flex;
@@ -141,6 +141,7 @@ export const DragAndDropDiv = styled.div`
   justify-content: center;
   align-items: center;
   border: 2px dashed ${(props) => props.theme.first_color};
+  background-color: rgba(0,0,0, 0.6);
   `;
 
 export const InputSelect = styled.input`

@@ -7,54 +7,56 @@ import {
 } from "./style/home.js";
 import * as THREE from "three";
 import * as dat from "dat.gui";
-// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import gsap from "gsap";
 import TextComposant from "./textComposant.js";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [guiRef, setGui] = useState();
   const [showText, setShowText] = useState(true);
   const [linkClick, setLinkClick] = useState(false);
-  const [linkEvent, setLinkEvent] = useState();
-  // const [cameraRotateX, setCameraRotateX] = useState(0);
-  // const [cameraPositionY, setCameraPositionY] = useState(0);
+  const navigate = useNavigate();
 
   const mount = useRef(null);
-  // color for vertex
-  const colors = [];
-  // initial color
-  let vertexR = 0;
-  let vertexG = 0;
-  let vertexB = 0.4;
-  // color when hover
-  let hoverColorR = 0.1;
-  let hoverColorG = 0.4;
-  let hoverColorB = 1;
 
   useEffect(() => {
     // GUI
+    // DATA GUI = controls on top right of your windows
     const gui = new dat.GUI();
     setGui(gui);
+    const SizeFolder = gui.addFolder("Size");
+    const ColorFolder = gui.addFolder("Plane Color");
+    const HoverColorFolder = gui.addFolder("Hover Color");
     let PlaneWidth = 400;
     let PlaneHeight = 400;
     let PlaneWidthSegments = 50;
     let PlaneHeightSegments = 50;
     const world = {
+      // plane size
       plane: {
-        width: PlaneHeight,
-        height: PlaneWidth,
         widthSegments: PlaneWidthSegments,
         heightSegments: PlaneHeightSegments,
       },
+      // initial color
+      initialColorGui: {
+        Red: 0,
+        Green: 0,
+        Blue: 0.4,
+      },
+      // color when hover
+      hoverColorGui: {
+        Red: 0.1,
+        Green: 0.4,
+        Blue: 1,
+      },
     };
 
-    // DATA GUI = controls on top right of your windows
     // change when change gui
     function generatePlane() {
       planeMesh.geometry.dispose();
       planeMesh.geometry = new THREE.PlaneGeometry(
-        world.plane.width,
-        world.plane.height,
+        PlaneWidth,
+        PlaneHeight,
         world.plane.widthSegments,
         world.plane.heightSegments
       );
@@ -78,14 +80,19 @@ const Home = () => {
       planeMesh.geometry.attributes.position.randomValues = randomValues;
       planeMesh.geometry.attributes.position.originalPosition =
         planeMesh.geometry.attributes.position.array;
-
+      // color for vertex
+      const colors = [];
       // color attribute addition
       for (
         let index = 0;
         index < planeMesh.geometry.attributes.position.count;
         index++
       ) {
-        colors.push(vertexR, vertexG, vertexB);
+        colors.push(
+          world.initialColorGui.Red,
+          world.initialColorGui.Green,
+          world.initialColorGui.Blue
+        );
       }
 
       // add new attribute
@@ -94,30 +101,8 @@ const Home = () => {
         new THREE.BufferAttribute(new Float32Array(colors), 3)
       );
     }
-    let more = 50;
-    let less = 20;
-    gui.add(world.plane, "width", PlaneWidth).onChange(generatePlane);
-    gui.add(world.plane, "height", PlaneHeight).onChange(generatePlane);
-    gui
-      .add(
-        world.plane,
-        "widthSegments",
-        PlaneWidthSegments - less,
-        PlaneWidthSegments + more
-      )
-      .onChange(generatePlane);
-    gui
-      .add(
-        world.plane,
-        "heightSegments",
-        PlaneHeightSegments - less,
-        PlaneHeightSegments + more
-      )
-      .onChange(generatePlane);
-
     // Raycaster
     const raycaster = new THREE.Raycaster();
-
     // Create the scene
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
@@ -126,24 +111,14 @@ const Home = () => {
       0.1,
       1000
     );
-    // gui.add(camera.rotation, 'x', 0, 1.5);
-    // gui.add(camera.position, 'y', 0, 400);
     // Position the camera
     camera.position.z = 50;
-
     const renderer = new THREE.WebGLRenderer();
-
-    // no BACKGROUND on the canva
-    // const renderer = new THREE.WebGLRenderer({ alpha: true });
-    // renderer.setClearColor(0x000000, 0);
 
     // width / height
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     mount.current.appendChild(renderer.domElement);
-
-    // Orbite Controle
-    // new OrbitControls(camera, renderer.domElement);
 
     //  Create the Plane
     const planeGeometry = new THREE.PlaneGeometry(
@@ -153,7 +128,6 @@ const Home = () => {
       PlaneHeightSegments
     );
     const planeMaterial = new THREE.MeshPhongMaterial({
-      // color: "cyan",
       side: THREE.DoubleSide,
       flatShading: true,
       vertexColors: true,
@@ -170,6 +144,27 @@ const Home = () => {
     backLight.position.set(0, 0, -1);
     scene.add(backLight);
 
+    // Stars
+    const starGeometry = new THREE.BufferGeometry();
+    const starMaterial = new THREE.PointsMaterial({
+      color: 0xffffff,
+    });
+
+    const starVertices = [];
+    for (let index = 0; index < 4000; index++) {
+      const x = (Math.random() - 0.5) * 2000;
+      const y = (Math.random() - 0.5) * 2000;
+      const z = -Math.random() * 2000;
+      starVertices.push(x, y, z);
+    }
+    starGeometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(starVertices, 3)
+    );
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    stars.rotation.x = 2;
+    scene.add(stars);
+
     // HOVER get mouse position
     const mouse = {
       x: undefined,
@@ -180,6 +175,7 @@ const Home = () => {
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     });
     let frame = 0;
+
     // Render the scene
     const animate = () => {
       requestAnimationFrame(animate);
@@ -210,15 +206,15 @@ const Home = () => {
         //  z [0, 0, 1]
         // color when not hover
         const initialColor = {
-          r: vertexR,
-          g: vertexG,
-          b: vertexB,
+          r: world.initialColorGui.Red,
+          g: world.initialColorGui.Green,
+          b: world.initialColorGui.Blue,
         };
         // color when hover
         const hoverColor = {
-          r: hoverColorR,
-          g: hoverColorG,
-          b: hoverColorB,
+          r: world.hoverColorGui.Red,
+          g: world.hoverColorGui.Green,
+          b: world.hoverColorGui.Blue,
         };
         gsap.to(hoverColor, {
           r: initialColor.r,
@@ -244,6 +240,44 @@ const Home = () => {
       }
     };
     animate();
+    // size folder
+    let more = 20;
+    let less = 20;
+    SizeFolder.add(
+      world.plane,
+      "widthSegments",
+      PlaneWidthSegments - less,
+      PlaneWidthSegments + more
+    ).onChange(generatePlane);
+    SizeFolder.add(
+      world.plane,
+      "heightSegments",
+      PlaneHeightSegments - less,
+      PlaneHeightSegments + more
+    ).onChange(generatePlane);
+    // color folder
+    ColorFolder.add(world.initialColorGui, "Red", 0, 1).onChange(generatePlane);
+    ColorFolder.add(world.initialColorGui, "Green", 0, 1).onChange(generatePlane);
+    ColorFolder.add(world.initialColorGui, "Blue", 0, 1).onChange(generatePlane);
+    // hover color folder
+    HoverColorFolder.add(world.hoverColorGui, "Red", 0, 1).onChange();
+    HoverColorFolder.add(world.hoverColorGui, "Green", 0, 1).onChange();
+    HoverColorFolder.add(world.hoverColorGui, "Blue", 0, 1).onChange();
+
+    const handleClickAnimationCamera = () => {
+      gsap.to(camera.rotation, {
+        duration: 2,
+        x: 1.5,
+        onComplete: () => {
+          gsap.to(camera.position, {
+            duration: 2,
+            y: 400,
+          });
+        },
+      });
+    };
+
+    document.getElementById("Button").addEventListener("click", handleClickAnimationCamera);
   }, []);
 
   useEffect(() => {
@@ -251,13 +285,12 @@ const Home = () => {
       // destroy GUI = control panel
       guiRef.destroy();
       setShowText(false);
-      const delayTime = 2000;
+      const delayTime = 3800;
       setTimeout(() => {
-        // console.log(linkEvent.target);
-        // window.location.href = linkEvent.target.href;
+        navigate("/choose_folder");
       }, delayTime);
     }
-  }, [linkEvent, linkClick, guiRef]);
+  }, [linkClick, guiRef, navigate]);
 
   return (
     <GlobalCont>
@@ -265,19 +298,11 @@ const Home = () => {
         <TextCont show={showText}>
           <TextComposant
             setLinkClick={setLinkClick}
-            setLinkEvent={setLinkEvent}
-            // setCameraRotateX={setCameraRotateX}
-            // setCameraPositionY={setCameraPositionY}
           />
         </TextCont>
       ) : (
         <FadingTextCont>
-          <TextComposant
-            setLinkClick={setLinkClick}
-            setLinkEvent={setLinkEvent}
-            // setCameraRotateX={setCameraRotateX}
-            // setCameraPositionY={setCameraPositionY}
-          />
+          <TextComposant />
         </FadingTextCont>
       )}
       <CanvaCont ref={mount} />

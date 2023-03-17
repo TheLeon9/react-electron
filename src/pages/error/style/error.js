@@ -48,7 +48,7 @@ export const CanvaCont = styled.div`
 
 export const P = styled.p`
   letter-spacing: ${(props) => props.theme.letter_spacing}px;
-  font-size: ${(props) => props.theme.medium_font_size}px;
+  font-size: ${(props) => props.theme.big_font_size}px;
   color: ${(props) => props.theme.white_color};
   line-height: 32px;
 
@@ -68,6 +68,7 @@ export const LinkCont = styled.div`
   margin-top: 20px;
 `;
 export const StyledLink = styled(Link)`
+font-size: ${(props) => props.theme.medium_font_size}px;
   font-weight: bold;
   border: ${(props) => props.theme.border_width}px solid
     ${(props) => props.theme.first_color};

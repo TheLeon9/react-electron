@@ -10,11 +10,8 @@ import {
 const TextComposant = (props) => {
 
     const handleClick = (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         props.setLinkClick(true);
-        props.setLinkEvent(event);
-        // props.setCameraRotateX(1.5);
-        // props.setCameraPositionY(10);
     };
   return (
     <>
@@ -25,7 +22,7 @@ const TextComposant = (props) => {
         and<Span> React </Span>
       </P>
       <LinkCont>
-        <StyledLink to="/choose_folder" onClick={handleClick}>
+        <StyledLink id="Button" onClick={handleClick}>
           START
         </StyledLink>
       </LinkCont>
