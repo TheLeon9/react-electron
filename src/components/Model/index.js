@@ -3,9 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
-
-import { useGLTF } from "@react-three/drei";
-import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 // const Model = () => {
@@ -95,6 +92,7 @@ const Model = (props) => {
 
   useEffect(() => {
     if (props.file !== "") {
+      // console.log(props.file);
       let file = props.file;
       const reader = new FileReader();
       reader.addEventListener(

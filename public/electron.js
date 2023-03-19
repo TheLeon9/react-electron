@@ -16,6 +16,7 @@ function createWindow() {
       nodeIntegration: true,
     },
   });
+  
   ipcMain.on("open-file-dialog", (event) => {
     dialog
       .showOpenDialog(mainWindow, {

@@ -23,7 +23,7 @@ import Model from "../../components/Model/index.js";
 import ModalComponent from "./modal";
 import Image from "./img/background.png";
 import Etoile from "./img/etoile.png";
-
+// import { remote } from "electron";
 function App() {
   const [file, setFile] = useState("");
   const [fileName, setFileName] = useState("");
@@ -40,7 +40,6 @@ function App() {
   }, []);
 
   function Verif(ext, file, name) {
-    console.log(ext);
     if (ext === "gltf") {
       setFileName(name);
       setFile(file);
@@ -67,9 +66,7 @@ function App() {
   };
   return (
     <PageWrapper>
-      {modal ? (
-          <ModalComponent setModal={setModal}/>
-      ) : null}
+      {modal ? <ModalComponent setModal={setModal} /> : null}
       <Left img={Etoile}>
         <LeftCont>
           <CanvaCont>

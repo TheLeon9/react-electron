@@ -255,14 +255,17 @@ const Home = () => {
       PlaneHeightSegments - less,
       PlaneHeightSegments + more
     ).onChange(generatePlane);
+    SizeFolder.open()
     // color folder
     ColorFolder.add(world.initialColorGui, "Red", 0, 1).onChange(generatePlane);
     ColorFolder.add(world.initialColorGui, "Green", 0, 1).onChange(generatePlane);
     ColorFolder.add(world.initialColorGui, "Blue", 0, 1).onChange(generatePlane);
+    ColorFolder.open()
     // hover color folder
     HoverColorFolder.add(world.hoverColorGui, "Red", 0, 1).onChange();
     HoverColorFolder.add(world.hoverColorGui, "Green", 0, 1).onChange();
     HoverColorFolder.add(world.hoverColorGui, "Blue", 0, 1).onChange();
+    HoverColorFolder.open()
 
     const handleClickAnimationCamera = () => {
       gsap.to(camera.rotation, {
