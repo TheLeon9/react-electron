@@ -41,7 +41,17 @@ function App() {
 
   function Verif(ext, file, name) {
     if (ext === "gltf") {
-      setFileName(name);
+      let checkName = name.split(".")[0];
+      let mot = "";
+      for (let char = 0; char < checkName.length; char++) {
+        mot += checkName[char];
+        if (char === 14) {
+          mot += "..";
+          break;
+        }
+      }
+      mot += "." + ext
+      setFileName(mot);
       setFile(file);
     } else {
       setModal(true);
