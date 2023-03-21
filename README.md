@@ -44,7 +44,7 @@ npm run electron:start
 ```
 --------------------------
 
-### Pour réaliser l'application :exploding_head:
+### Pour réaliser le site web :exploding_head:
 
 Voici les différentes technologies utilisées pour la réalisation de ce projet :
 * [React] pour le site
