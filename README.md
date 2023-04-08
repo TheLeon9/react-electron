@@ -56,6 +56,7 @@ Voici les différentes technologies utilisées pour la réalisation de ce projet
 * [Gsap] pour les animations qui vont avec le 3D
 * [Dat.gui] pour le 3D également
 * [Electron] pour la sélection du fichier depuis notre dossier
+* [Stats] pour l'affichage des FPS....
 
 --------------------------
 
